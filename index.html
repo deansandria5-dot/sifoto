@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIFOTO - Sistem Informasi Foto Kegiatan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="panel">
+      <div class="brand">
+        <div class="brand-mark">SF</div>
+        <div>
+          <h1>SIFOTO</h1>
+          <p>Sistem Informasi Foto Kegiatan</p>
+        </div>
+      </div>
+
+      <p class="hint">
+        Sistem ini digunakan untuk menyusun laporan hasil perjalanan dinas secara digital dengan format F4 siap cetak.
+        Lengkapi data laporan, unggah dokumentasi foto, lalu cetak atau simpan sebagai PDF.
+      </p>
+
+      <div class="section-title">Data Perjalanan Dinas</div>
+
+      <label for="maksud">Maksud Perjalanan Dinas</label>
+      <textarea id="maksud" placeholder="Masukkan maksud dan tujuan umum pelaksanaan perjalanan dinas"></textarea>
+
+      <label for="tujuan">Tujuan Perjalanan Dinas</label>
+      <input id="tujuan" placeholder="Masukkan tujuan pelaksanaan kegiatan atau perjalanan dinas">
+
+      <label for="tanggal">Waktu Pelaksanaan</label>
+      <input id="tanggal" type="date">
+
+      <label for="tempat">Tempat Kegiatan</label>
+      <input id="tempat" placeholder="Masukkan lokasi atau tempat pelaksanaan kegiatan">
+
+      <label for="hasil">Hasil / Kesimpulan</label>
+      <textarea id="hasil" placeholder="Uraikan hasil, rangkaian kegiatan, dan kesimpulan perjalanan dinas"></textarea>
+
+      <label for="penutup">Penutup</label>
+      <textarea id="penutup">Demikian laporan Perjalanan Dinas ini kami buat, sebagai bahan pertanggung jawaban perjalanan dinas untuk ditindak lanjuti.</textarea>
+
+      <div class="section-title">Tanda Tangan</div>
+
+      <label for="nama">Nama Pembuat Laporan</label>
+      <input id="nama" placeholder="Masukkan nama lengkap beserta gelar">
+
+      <label for="nip">NIP</label>
+      <input id="nip" placeholder="Masukkan Nomor Induk Pegawai">
+
+      <div class="section-title">Dokumentasi Foto</div>
+
+      <label for="photosUpload">Upload 4 foto</label>
+      <input id="photosUpload" type="file" accept="image/*" multiple>
+      <span class="file-note">Foto akan otomatis resize dan crop mengikuti grid laporan.</span>
+
+      <button class="desktop-print" onclick="window.print()">Cetak / Simpan PDF F4</button>
+      <div class="mobile-actions">
+        <button onclick="window.print()">Cetak PDF F4</button>
+      </div>
+    </div>
+
+    <div class="preview-wrap">
+      <div class="paper">
+        <div class="kop">
+          <div>
+            <img class="logo" src="logo.png" alt="Logo" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex';">
+            <div id="logoFallback" class="logo-fallback">LOGO</div>
+          </div>
+
+          <div class="kop-center">
+            <div class="t1">PEMERINTAH KOTA TASIKMALAYA</div>
+            <div class="t2">SEKRETARIAT DAERAH</div>
+            <div class="addr">Jln. Letnan Harun No.1 Tlp(0265) 322865</div>
+            <div class="addr">Faks (0265) 330805 Email : <span>setda@tasikmalaya.go.id</span></div>
+            <div class="city">TASIKMALAYA</div>
+          </div>
+
+          <div class="kodepos">Kode Pos 46132</div>
+        </div>
+
+        <div class="doc-title">LAPORAN HASIL PERJALANAN DINAS</div>
+
+        <div class="report">
+          <div class="row">
+            <div>I</div>
+            <div>Maksud Perjalan Dinas</div>
+            <div class="colon">:</div>
+            <div id="outMaksud">-</div>
+          </div>
+
+          <div class="row">
+            <div>II</div>
+            <div>Tujuan Perjalanan Dinas</div>
+            <div class="colon">:</div>
+            <div id="outTujuan">-</div>
+          </div>
+
+          <div class="row">
+            <div>III</div>
+            <div>1. Waktu Pelaksanaan</div>
+            <div class="colon">:</div>
+            <div id="outTanggal">-</div>
+          </div>
+
+          <div class="row">
+            <div></div>
+            <div>2. Tempat Kegiatan</div>
+            <div class="colon">:</div>
+            <div id="outTempat">-</div>
+          </div>
+
+          <div class="row">
+            <div>IV</div>
+            <div>
+              Hasil/Kesimpulan yang<br>
+              didapat dalam perjalanan<br>
+              dinas sebagai berikut
+            </div>
+            <div class="colon">:</div>
+            <div>
+              <div id="outHasil">-</div>
+
+              <div class="photos-inline">
+                <div class="photo-box" id="photo0">Foto 1</div>
+                <div class="photo-box" id="photo1">Foto 2</div>
+                <div class="photo-box" id="photo2">Foto 3</div>
+                <div class="photo-box" id="photo3">Foto 4</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>V</div>
+            <div>Penutup</div>
+            <div class="colon">:</div>
+            <div id="outPenutup">
+              Demikian laporan Perjalanan Dinas ini kami buat, sebagai bahan pertanggung jawaban perjalanan dinas untuk ditindak lanjuti.
+            </div>
+          </div>
+
+          <div class="signature">
+            <div>Yang Membuat Laporan</div>
+            <div class="sig-name" id="outNama">-</div>
+            <div>NIP. <span id="outNip">-</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
