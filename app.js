@@ -11,18 +11,47 @@ function bindText(inputId, outputId) {
   const input = document.getElementById(inputId);
   const output = document.getElementById(outputId);
 
+  if (!input || !output) return;
+
   input.addEventListener("input", () => {
     output.innerText = input.value || "-";
   });
 }
 
 bindText("maksud", "outMaksud");
-bindText("tujuan", "outTujuan");
 bindText("tempat", "outTempat");
 bindText("hasil", "outHasil");
 bindText("penutup", "outPenutup");
 bindText("nama", "outNama");
 bindText("nip", "outNip");
+
+const tujuanSelect = document.getElementById("tujuanSelect");
+const tujuanInput = document.getElementById("tujuan");
+const outTujuan = document.getElementById("outTujuan");
+
+function updateTujuanPreview() {
+  if (!tujuanSelect || !tujuanInput || !outTujuan) return;
+
+  if (tujuanSelect.value === "manual") {
+    tujuanInput.style.display = "block";
+    outTujuan.innerText = tujuanInput.value || "-";
+    tujuanInput.focus();
+  } else {
+    tujuanInput.style.display = "none";
+    tujuanInput.value = tujuanSelect.value;
+    outTujuan.innerText = tujuanSelect.value || "-";
+  }
+}
+
+if (tujuanSelect && tujuanInput && outTujuan) {
+  tujuanSelect.addEventListener("change", updateTujuanPreview);
+
+  tujuanInput.addEventListener("input", () => {
+    outTujuan.innerText = tujuanInput.value || "-";
+  });
+
+  updateTujuanPreview();
+}
 
 document.getElementById("tanggal").addEventListener("change", (e) => {
   const value = e.target.value;
