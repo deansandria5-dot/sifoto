@@ -4,10 +4,93 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SIFOTO - Sistem Informasi Foto Kegiatan</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; }
+    
+    .app { display: grid; grid-template-columns: 400px 1fr; gap: 20px; max-width: 1400px; margin: 0 auto; padding: 20px; }
+    
+    /* Panel Input */
+    .panel { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); height: fit-content; position: sticky; top: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .brand-mark { width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; }
+    .brand h1 { font-size: 24px; color: #2d3748; margin-bottom: 4px; }
+    .brand p { font-size: 13px; color: #718096; }
+    .hint { font-size: 13px; color: #4a5568; line-height: 1.6; margin-bottom: 20px; padding: 12px; background: #edf2f7; border-radius: 8px; }
+    .section-title { font-size: 14px; font-weight: 600; color: #2d3748; margin: 20px 0 12px 0; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+    
+    label { display: block; font-size: 13px; font-weight: 500; color: #4a5568; margin-bottom: 6px; margin-top: 12px; }
+    input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; transition: all 0.2s; font-family: inherit; }
+    input:focus, textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    textarea { min-height: 80px; resize: vertical; }
+    .file-note { display: block; font-size: 11px; color: #718096; margin-top: 6px; }
+    
+    /* Buttons */
+    .button-group { display: flex; gap: 10px; margin-top: 20px; }
+    button { flex: 1; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .desktop-print { background: #4299e1; color: white; }
+    .desktop-print:hover { background: #3182ce; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3); }
+    .btn-word { background: #217346; color: white; }
+    .btn-word:hover { background: #1a5c38; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(33, 115, 70, 0.3); }
+    .mobile-actions { display: none; margin-top: 15px; }
+    .mobile-actions button { background: #4299e1; color: white; width: 100%; margin-bottom: 10px; }
+    
+    /* Preview Area */
+    .preview-wrap { background: white; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 30px; overflow: auto; }
+    .paper { width: 210mm; min-height: 297mm; margin: 0 auto; background: white; padding: 20mm; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    
+    /* Kop Surat Styles */
+    .kop { display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+    .logo { width: 80px; height: 80px; object-fit: contain; }
+    .logo-fallback { width: 80px; height: 80px; display: none; align-items: center; justify-content: center; border: 2px solid #000; font-weight: bold; font-size: 14px; }
+    .kop-center { flex: 1; text-align: center; margin: 0 20px; }
+    .t1 { font-size: 14pt; font-weight: bold; margin-bottom: 2px; }
+    .t2 { font-size: 12pt; font-weight: bold; margin-bottom: 4px; }
+    .addr { font-size: 10pt; margin-bottom: 2px; }
+    .addr span { color: blue; }
+    .city { font-size: 12pt; font-weight: bold; margin-top: 5px; }
+    .kodepos { font-size: 10pt; text-align: right; }
+    
+    /* Document Content */
+    .doc-title { text-align: center; font-size: 14pt; font-weight: bold; margin: 20px 0; text-decoration: underline; }
+    .report { line-height: 1.6; font-size: 11pt; }
+    .row { display: flex; margin-bottom: 10px; align-items: flex-start; }
+    .row > div:first-child { width: 40px; font-weight: bold; }
+    .row > div:nth-child(2) { width: 200px; }
+    .colon { width: 20px; }
+    .row > div:last-child { flex: 1; }
+    
+    /* Photos Grid */
+    .photos-inline { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+    .photo-box { width: 100%; height: 120px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f7fafc; font-size: 11px; color: #718096; }
+    .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+    
+    /* Signature Section */
+    .signature { margin-top: 40px; text-align: right; padding-right: 20px; }
+    .sig-label { font-size: 11pt; margin-bottom: 50px; } /* Label custom seperti "Yang Membuat Laporan" */
+    .sig-name { font-weight: bold; margin-bottom: 5px; font-size: 11pt; text-decoration: underline; }
+    .sig-nip { font-size: 11pt; }
+    
+    /* Responsive & Print */
+    @media print {
+      body { background: white; }
+      .app { display: block; padding: 0; }
+      .panel { display: none; }
+      .preview-wrap { box-shadow: none; padding: 0; }
+      .paper { box-shadow: none; width: 100%; padding: 0; }
+    }
+    @media (max-width: 1024px) {
+      .app { grid-template-columns: 1fr; }
+      .panel { position: static; }
+      .desktop-print, .btn-word { display: none; }
+      .mobile-actions { display: block; }
+      .paper { width: 100%; padding: 15mm; }
+    }
+  </style>
 </head>
 <body>
   <div class="app">
+    <!-- PANEL INPUT -->
     <div class="panel">
       <div class="brand">
         <div class="brand-mark">SF</div>
@@ -17,54 +100,56 @@
         </div>
       </div>
 
-      <p class="hint">
-        Sistem ini digunakan untuk menyusun laporan hasil perjalanan dinas secara digital dengan format F4 siap cetak.
-        Lengkapi data laporan, unggah dokumentasi foto, lalu cetak atau simpan sebagai PDF.
-      </p>
+      <p class="hint">Sistem ini digunakan untuk menyusun laporan hasil perjalanan dinas secara digital. Lengkapi data, unggah foto, lalu simpan PDF/Word.</p>
 
       <div class="section-title">Data Perjalanan Dinas</div>
+      <label>Maksud Perjalanan Dinas</label>
+      <textarea id="maksud" placeholder="Masukkan maksud..."></textarea>
 
-      <label for="maksud">Maksud Perjalanan Dinas</label>
-      <textarea id="maksud" placeholder="Masukkan maksud dan tujuan umum pelaksanaan perjalanan dinas"></textarea>
+      <label>Tujuan Perjalanan Dinas</label>
+      <input id="tujuan" placeholder="Masukkan tujuan...">
 
-      <label for="tujuan">Tujuan Perjalanan Dinas</label>
-      <input id="tujuan" placeholder="Masukkan tujuan pelaksanaan kegiatan atau perjalanan dinas">
-
-      <label for="tanggal">Waktu Pelaksanaan</label>
+      <label>Waktu Pelaksanaan</label>
       <input id="tanggal" type="date">
 
-      <label for="tempat">Tempat Kegiatan</label>
-      <input id="tempat" placeholder="Masukkan lokasi atau tempat pelaksanaan kegiatan">
+      <label>Tempat Kegiatan</label>
+      <input id="tempat" placeholder="Masukkan lokasi...">
 
-      <label for="hasil">Hasil / Kesimpulan</label>
-      <textarea id="hasil" placeholder="Uraikan hasil, rangkaian kegiatan, dan kesimpulan perjalanan dinas"></textarea>
+      <label>Hasil / Kesimpulan</label>
+      <textarea id="hasil" placeholder="Uraikan hasil kegiatan..."></textarea>
 
-      <label for="penutup">Penutup</label>
+      <label>Penutup</label>
       <textarea id="penutup">Demikian laporan Perjalanan Dinas ini kami buat, sebagai bahan pertanggung jawaban perjalanan dinas untuk ditindak lanjuti.</textarea>
 
       <div class="section-title">Tanda Tangan</div>
+      
+      <!-- INPUT BARU UNTUK LABEL TANDA TANGAN -->
+      <label for="labelTT">Label Tanda Tangan (Custom)</label>
+      <input id="labelTT" value="Yang Membuat Laporan" placeholder="Contoh: Yang Membuat Laporan / Mengetahui">
 
-      <label for="jabatan">Jabatan Penandatangan</label>
-      <input id="jabatan" placeholder="Contoh: Kepala Bagian Umum">
+      <label>Nama Pembuat Laporan</label>
+      <input id="nama" placeholder="Nama lengkap beserta gelar">
 
-      <label for="nama">Nama Pembuat Laporan</label>
-      <input id="nama" placeholder="Masukkan nama lengkap beserta gelar">
-
-      <label for="nip">NIP</label>
-      <input id="nip" placeholder="Masukkan Nomor Induk Pegawai">
+      <label>NIP</label>
+      <input id="nip" placeholder="Nomor Induk Pegawai">
 
       <div class="section-title">Dokumentasi Foto</div>
-
-      <label for="photosUpload">Upload 4 foto</label>
+      <label>Upload 4 foto</label>
       <input id="photosUpload" type="file" accept="image/*" multiple>
       <span class="file-note">Foto akan otomatis resize dan crop mengikuti grid laporan.</span>
 
-      <button class="desktop-print" onclick="window.print()">Cetak / Simpan PDF F4</button>
+      <div class="button-group">
+        <button class="desktop-print" onclick="window.print()">Cetak / Simpan PDF F4</button>
+        <button class="btn-word" onclick="exportToWord()">Simpan ke Word (.doc)</button>
+      </div>
+      
       <div class="mobile-actions">
         <button onclick="window.print()">Cetak PDF F4</button>
+        <button onclick="exportToWord()" style="background: #217346;">Simpan Word</button>
       </div>
     </div>
 
+    <!-- PREVIEW DOKUMEN -->
     <div class="preview-wrap">
       <div class="paper">
         <div class="kop">
@@ -72,7 +157,6 @@
             <img class="logo" src="logo.png" alt="Logo" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex';">
             <div id="logoFallback" class="logo-fallback">LOGO</div>
           </div>
-
           <div class="kop-center">
             <div class="t1">PEMERINTAH KOTA TASIKMALAYA</div>
             <div class="t2">SEKRETARIAT DAERAH</div>
@@ -80,52 +164,23 @@
             <div class="addr">Faks (0265) 330805 Email : <span>setda@tasikmalaya.go.id</span></div>
             <div class="city">TASIKMALAYA</div>
           </div>
-
           <div class="kodepos">Kode Pos 46132</div>
         </div>
 
         <div class="doc-title">LAPORAN HASIL PERJALANAN DINAS</div>
 
         <div class="report">
-          <div class="row">
-            <div>I</div>
-            <div>Maksud Perjalan Dinas</div>
-            <div class="colon">:</div>
-            <div id="outMaksud">-</div>
-          </div>
-
-          <div class="row">
-            <div>II</div>
-            <div>Tujuan Perjalanan Dinas</div>
-            <div class="colon">:</div>
-            <div id="outTujuan">-</div>
-          </div>
-
-          <div class="row">
-            <div>III</div>
-            <div>1. Waktu Pelaksanaan</div>
-            <div class="colon">:</div>
-            <div id="outTanggal">-</div>
-          </div>
-
-          <div class="row">
-            <div></div>
-            <div>2. Tempat Kegiatan</div>
-            <div class="colon">:</div>
-            <div id="outTempat">-</div>
-          </div>
-
+          <div class="row"><div>I</div><div>Maksud Perjalan Dinas</div><div class="colon">:</div><div id="outMaksud">-</div></div>
+          <div class="row"><div>II</div><div>Tujuan Perjalanan Dinas</div><div class="colon">:</div><div id="outTujuan">-</div></div>
+          <div class="row"><div>III</div><div>1. Waktu Pelaksanaan</div><div class="colon">:</div><div id="outTanggal">-</div></div>
+          <div class="row"><div></div><div>2. Tempat Kegiatan</div><div class="colon">:</div><div id="outTempat">-</div></div>
+          
           <div class="row">
             <div>IV</div>
-            <div>
-              Hasil/Kesimpulan yang<br>
-              didapat dalam perjalanan<br>
-              dinas sebagai berikut
-            </div>
+            <div>Hasil/Kesimpulan yang<br>dapat dalam perjalanan<br>dinas sebagai berikut</div>
             <div class="colon">:</div>
             <div>
               <div id="outHasil">-</div>
-
               <div class="photos-inline">
                 <div class="photo-box" id="photo0">Foto 1</div>
                 <div class="photo-box" id="photo1">Foto 2</div>
@@ -135,25 +190,118 @@
             </div>
           </div>
 
-          <div class="row">
-            <div>V</div>
-            <div>Penutup</div>
-            <div class="colon">:</div>
-            <div id="outPenutup">
-              Demikian laporan Perjalanan Dinas ini kami buat, sebagai bahan pertanggung jawaban perjalanan dinas untuk ditindak lanjuti.
-            </div>
-          </div>
+          <div class="row"><div>V</div><div>Penutup</div><div class="colon">:</div><div id="outPenutup">Demikian laporan Perjalanan Dinas ini kami buat...</div></div>
 
+          <!-- BAGIAN TANDA TANGAN DENGAN LABEL CUSTOM -->
           <div class="signature">
-            <div id="outJabatan">Yang Membuat Laporan</div>
+            <div class="sig-label" id="outLabelTT">Yang Membuat Laporan</div>
             <div class="sig-name" id="outNama">-</div>
-            <div>NIP. <span id="outNip">-</span></div>
+            <div class="sig-nip">NIP. <span id="outNip">-</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+    // Mapping ID Input ke ID Output Preview
+    const inputs = {
+      maksud: 'outMaksud',
+      tujuan: 'outTujuan',
+      tanggal: 'outTanggal',
+      tempat: 'outTempat',
+      hasil: 'outHasil',
+      penutup: 'outPenutup',
+      nama: 'outNama',
+      nip: 'outNip',
+      labelTT: 'outLabelTT' // Mapping baru untuk label tanda tangan
+    };
+
+    // Event Listener untuk update realtime
+    Object.keys(inputs).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          const output = document.getElementById(inputs[id]);
+          if (output) {
+            // Jika input kosong, tampilkan default text atau strip
+            if (id === 'labelTT') {
+               output.textContent = el.value || 'Yang Membuat Laporan';
+            } else {
+               output.textContent = el.value || '-';
+            }
+          }
+        });
+      }
+    });
+
+    // Handle Upload Foto
+    document.getElementById('photosUpload').addEventListener('change', function(e) {
+      const files = Array.from(e.target.files).slice(0, 4);
+      files.forEach((file, index) => {
+        if (index < 4) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const photoBox = document.getElementById(`photo${index}`);
+            photoBox.innerHTML = `<img src="${event.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+
+    // Fungsi Export ke Word
+    function exportToWord() {
+      const paper = document.querySelector('.paper');
+      const clone = paper.cloneNode(true);
+      
+      // Style khusus agar rapi saat dibuka di MS Word
+      const style = `
+        <style>
+          body { font-family: Arial, sans-serif; margin: 2cm; }
+          .kop { display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+          .logo { width: 80px; height: 80px; }
+          .logo-fallback { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border: 2px solid #000; font-weight: bold; }
+          .kop-center { flex: 1; text-align: center; margin: 0 20px; }
+          .t1 { font-size: 14pt; font-weight: bold; }
+          .t2 { font-size: 12pt; font-weight: bold; }
+          .addr { font-size: 10pt; }
+          .city { font-size: 12pt; font-weight: bold; margin-top: 5px; }
+          .doc-title { text-align: center; font-size: 14pt; font-weight: bold; margin: 20px 0; text-decoration: underline; }
+          .report { line-height: 1.6; }
+          .row { display: flex; margin-bottom: 10px; }
+          .row > div:first-child { width: 40px; font-weight: bold; }
+          .row > div:nth-child(2) { width: 200px; }
+          .colon { width: 20px; }
+          .row > div:last-child { flex: 1; }
+          .photos-inline { display: flex; gap: 10px; margin-top: 10px; }
+          .photo-box { width: 120px; height: 90px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+          .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+          .signature { margin-top: 60px; text-align: right; page-break-inside: avoid; }
+          .sig-label { margin-bottom: 60px; }
+          .sig-name { font-weight: bold; text-decoration: underline; }
+        </style>
+      `;
+      
+      const html = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+              xmlns:w='urn:schemas-microsoft-com:office:word' 
+              xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset="utf-8">${style}</head>
+        <body>${clone.outerHTML}</body>
+        </html>
+      `;
+      
+      const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Laporan_Perjalanan_Dinas.doc';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  </script>
 </body>
 </html>
