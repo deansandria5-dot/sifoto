@@ -3,10 +3,385 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <meta name="theme-color" content="#111827" />
   <title>SIFOTO - Sistem Informasi Foto Kegiatan</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .panel {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .brand h1 {
+      font-size: 24px;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+
+    .brand p {
+      font-size: 13px;
+      color: #718096;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: #edf2f7;
+      border-radius: 8px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 20px 0 12px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 6px;
+      margin-top: 12px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .file-note {
+      display: block;
+      font-size: 11px;
+      color: #718096;
+      margin-top: 6px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .desktop-print {
+      background: #4299e1;
+      color: white;
+    }
+
+    .desktop-print:hover {
+      background: #3182ce;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+    }
+
+    .btn-word {
+      background: #217346;
+      color: white;
+    }
+
+    .btn-word:hover {
+      background: #1a5c38;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(33, 115, 70, 0.3);
+    }
+
+    .mobile-actions {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .mobile-actions button {
+      background: #4299e1;
+      color: white;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .preview-wrap {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 30px;
+      overflow: auto;
+    }
+
+    .paper {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: white;
+      padding: 20mm;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .kop {
+      display: flex;
+      align-items: center;
+      border-bottom: 3px solid #000;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    .logo-fallback {
+      width: 80px;
+      height: 80px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #000;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .kop-center {
+      flex: 1;
+      text-align: center;
+      margin: 0 20px;
+    }
+
+    .t1 {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .t2 {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .addr {
+      font-size: 10pt;
+      margin-bottom: 2px;
+    }
+
+    .addr span {
+      color: blue;
+    }
+
+    .city {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .kodepos {
+      font-size: 10pt;
+      text-align: right;
+    }
+
+    .doc-title {
+      text-align: center;
+      font-size: 14pt;
+      font-weight: bold;
+      margin: 20px 0;
+      text-decoration: underline;
+    }
+
+    .report {
+      line-height: 1.6;
+      font-size: 11pt;
+    }
+
+    .row {
+      display: flex;
+      margin-bottom: 10px;
+      align-items: flex-start;
+    }
+
+    .row > div:first-child {
+      width: 40px;
+      font-weight: bold;
+    }
+
+    .row > div:nth-child(2) {
+      width: 200px;
+    }
+
+    .colon {
+      width: 20px;
+    }
+
+    .row > div:last-child {
+      flex: 1;
+    }
+
+    .photos-inline {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .photo-box {
+      width: 100%;
+      height: 120px;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #f7fafc;
+      font-size: 11px;
+      color: #718096;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .signature {
+      margin-top: 40px;
+      text-align: right;
+      padding-right: 20px;
+    }
+
+    .sig-name {
+      font-weight: bold;
+      margin: 30px 0 5px 0;
+      font-size: 11pt;
+    }
+
+    #outJabatan {
+      font-size: 11pt;
+      margin-bottom: 30px;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      
+      .app {
+        display: block;
+        padding: 0;
+      }
+      
+      .panel {
+        display: none;
+      }
+      
+      .preview-wrap {
+        box-shadow: none;
+        padding: 0;
+      }
+      
+      .paper {
+        box-shadow: none;
+        width: 100%;
+        padding: 0;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      
+      .panel {
+        position: static;
+      }
+      
+      .desktop-print, .btn-word {
+        display: none;
+      }
+      
+      .mobile-actions {
+        display: block;
+      }
+      
+      .paper {
+        width: 100%;
+        padding: 15mm;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app">
@@ -21,7 +396,7 @@
 
       <p class="hint">
         Sistem ini digunakan untuk menyusun laporan hasil perjalanan dinas secara digital dengan format F4 siap cetak.
-        Lengkapi data laporan, unggah dokumentasi foto, lalu cetak atau simpan sebagai PDF.
+        Lengkapi data laporan, unggah dokumentasi foto, lalu cetak atau simpan sebagai PDF/Word.
       </p>
 
       <div class="section-title">Data Perjalanan Dinas</div>
@@ -29,33 +404,8 @@
       <label for="maksud">Maksud Perjalanan Dinas</label>
       <textarea id="maksud" placeholder="Masukkan maksud dan tujuan umum pelaksanaan perjalanan dinas"></textarea>
 
-      <label for="tujuanSelect">Tujuan Perjalanan Dinas</label>
-
-      <select id="tujuanSelect">
-        <option value="">Pilih tujuan perjalanan dinas</option>
-
-        <option value="Mendokumentasikan Kegiatan Wali Kota Tasikmalaya">
-          Mendokumentasikan Kegiatan Wali Kota Tasikmalaya
-        </option>
-
-        <option value="Mendokumentasikan Kegiatan Wakil Wali Kota Tasikmalaya">
-          Mendokumentasikan Kegiatan Wakil Wali Kota Tasikmalaya
-        </option>
-
-        <option value="Mendokumentasikan Kegiatan Sekretaris Daerah Kota Tasikmalaya">
-          Mendokumentasikan Kegiatan Sekretaris Daerah Kota Tasikmalaya
-        </option>
-
-        <option value="manual">
-          Isi manual
-        </option>
-      </select>
-
-      <input
-        id="tujuan"
-        placeholder="Masukkan tujuan perjalanan dinas secara manual"
-        style="display:none; margin-top:8px;"
-      >
+      <label for="tujuan">Tujuan Perjalanan Dinas</label>
+      <input id="tujuan" placeholder="Masukkan tujuan pelaksanaan kegiatan atau perjalanan dinas">
 
       <label for="tanggal">Waktu Pelaksanaan</label>
       <input id="tanggal" type="date">
@@ -77,15 +427,23 @@
       <label for="nip">NIP</label>
       <input id="nip" placeholder="Masukkan Nomor Induk Pegawai">
 
+      <label for="jabatan">Jabatan</label>
+      <input id="jabatan" placeholder="Masukkan jabatan pembuat laporan">
+
       <div class="section-title">Dokumentasi Foto</div>
 
       <label for="photosUpload">Upload 4 foto</label>
       <input id="photosUpload" type="file" accept="image/*" multiple>
       <span class="file-note">Foto akan otomatis resize dan crop mengikuti grid laporan.</span>
 
-      <button class="desktop-print" onclick="window.print()">Cetak / Simpan PDF F4</button>
+      <div class="button-group">
+        <button class="desktop-print" onclick="window.print()">Cetak / Simpan PDF F4</button>
+        <button class="btn-word" onclick="exportToWord()">Simpan ke Word (.doc)</button>
+      </div>
+      
       <div class="mobile-actions">
         <button onclick="window.print()">Cetak PDF F4</button>
+        <button onclick="exportToWord()" style="background: #217346;">Simpan Word</button>
       </div>
     </div>
 
@@ -169,7 +527,7 @@
           </div>
 
           <div class="signature">
-            <div>Yang Membuat Laporan</div>
+            <div id="outJabatan">-</div>
             <div class="sig-name" id="outNama">-</div>
             <div>NIP. <span id="outNip">-</span></div>
           </div>
@@ -178,6 +536,108 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+    // Update preview saat input berubah
+    const inputs = {
+      maksud: 'outMaksud',
+      tujuan: 'outTujuan',
+      tanggal: 'outTanggal',
+      tempat: 'outTempat',
+      hasil: 'outHasil',
+      penutup: 'outPenutup',
+      nama: 'outNama',
+      nip: 'outNip',
+      jabatan: 'outJabatan'
+    };
+
+    Object.keys(inputs).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          const output = document.getElementById(inputs[id]);
+          if (output) {
+            output.textContent = el.value || '-';
+          }
+        });
+      }
+    });
+
+    // Handle photo upload
+    document.getElementById('photosUpload').addEventListener('change', function(e) {
+      const files = Array.from(e.target.files).slice(0, 4);
+      
+      files.forEach((file, index) => {
+        if (index < 4) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const photoBox = document.getElementById(`photo${index}`);
+            photoBox.innerHTML = `<img src="${event.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+
+    // Export to Word function
+    function exportToWord() {
+      const paper = document.querySelector('.paper');
+      const clone = paper.cloneNode(true);
+      
+      // Remove print-specific styles and make it Word-friendly
+      const style = `
+        <style>
+          body { font-family: Arial, sans-serif; margin: 2cm; }
+          .kop { display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+          .logo { width: 80px; height: 80px; }
+          .logo-fallback { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border: 2px solid #000; font-weight: bold; }
+          .kop-center { flex: 1; text-align: center; margin: 0 20px; }
+          .t1 { font-size: 14pt; font-weight: bold; }
+          .t2 { font-size: 12pt; font-weight: bold; }
+          .addr { font-size: 10pt; }
+          .city { font-size: 12pt; font-weight: bold; margin-top: 5px; }
+          .kodepos { font-size: 10pt; }
+          .doc-title { text-align: center; font-size: 14pt; font-weight: bold; margin: 20px 0; text-decoration: underline; }
+          .report { line-height: 1.6; }
+          .row { display: flex; margin-bottom: 10px; }
+          .row > div:first-child { width: 40px; font-weight: bold; }
+          .row > div:nth-child(2) { width: 200px; }
+          .colon { width: 20px; }
+          .row > div:last-child { flex: 1; }
+          .photos-inline { display: flex; gap: 10px; margin-top: 10px; }
+          .photo-box { width: 120px; height: 90px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+          .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+          .signature { margin-top: 40px; text-align: right; }
+          .sig-name { font-weight: bold; margin: 30px 0 5px 0; }
+        </style>
+      `;
+      
+      const html = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+              xmlns:w='urn:schemas-microsoft-com:office:word' 
+              xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset="utf-8">
+          ${style}
+        </head>
+        <body>
+          ${clone.outerHTML}
+        </body>
+        </html>
+      `;
+      
+      const blob = new Blob(['\ufeff', html], {
+        type: 'application/msword'
+      });
+      
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Laporan_Perjalanan_Dinas.doc';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  </script>
 </body>
 </html>
