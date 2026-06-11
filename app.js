@@ -11,6 +11,8 @@ function bindText(inputId, outputId) {
   const input = document.getElementById(inputId);
   const output = document.getElementById(outputId);
 
+  if (!input || !output) return;
+
   input.addEventListener("input", () => {
     output.innerText = input.value || "-";
   });
@@ -21,9 +23,19 @@ bindText("tujuan", "outTujuan");
 bindText("tempat", "outTempat");
 bindText("hasil", "outHasil");
 bindText("penutup", "outPenutup");
-bindText("jabatan", "outJabatan");
 bindText("nama", "outNama");
 bindText("nip", "outNip");
+
+/* khusus jabatan */
+const jabatan = document.getElementById("jabatan");
+const outJabatan = document.getElementById("outJabatan");
+
+if (jabatan && outJabatan) {
+  jabatan.addEventListener("input", () => {
+    outJabatan.innerText =
+      jabatan.value || "Yang Membuat Laporan";
+  });
+}
 
 document.getElementById("tanggal").addEventListener("change", (e) => {
   const value = e.target.value;
